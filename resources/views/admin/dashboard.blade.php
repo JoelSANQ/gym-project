@@ -24,15 +24,15 @@
                         </a>
 
                         <!-- Gestión de Clases -->
-                        <div class="block p-6 bg-gradient-to-br from-green-50 to-green-100 border border-green-200 rounded-lg opacity-50 cursor-not-allowed">
+                        <a href="{{ route('admin.classes.index') }}" class="block p-6 bg-gradient-to-br from-green-50 to-green-100 border border-green-200 rounded-lg hover:shadow-lg transition">
                             <div class="flex items-center">
                                 <div class="text-4xl text-green-600 mr-4">📚</div>
                                 <div>
                                     <h4 class="font-bold text-lg text-green-900">Gestión de Clases</h4>
-                                    <p class="text-sm text-green-700">Próximamente</p>
+                                    <p class="text-sm text-green-700">Crear, editar y gestionar clases</p>
                                 </div>
                             </div>
-                        </div>
+                        </a>
 
                         <!-- Gestión de Membresías -->
                         <div class="block p-6 bg-gradient-to-br from-purple-50 to-purple-100 border border-purple-200 rounded-lg opacity-50 cursor-not-allowed">

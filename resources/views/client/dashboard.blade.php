@@ -1,5 +1,7 @@
+{{-- resources/views/profile/panel.blade.php (o similar) --}}
 <x-app-layout> 
     <x-slot name="header">
+        @php($user = auth()->user())
         <div class="flex items-center justify-between">
             <div>
                 <h2 class="font-semibold text-2xl text-gray-900 leading-tight">
@@ -10,10 +12,9 @@
                 </p>
             </div>
 
-            @php($user = auth()->user())
             <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold 
-                        {{ $user->is_active ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-red-50 text-red-700 border border-red-200' }}">
-                <span class="mr-1.5 h-2 w-2 rounded-full {{ $user->is_active ? 'bg-emerald-500' : 'bg-red-500' }}"></span>
+                        {{ $user->is_active ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-slate-100 text-slate-700 border border-slate-300' }}">
+                <span class="mr-1.5 h-2 w-2 rounded-full {{ $user->is_active ? 'bg-emerald-500' : 'bg-slate-400' }}"></span>
                 {{ $user->is_active ? 'Cuenta activa' : 'Cuenta inactiva' }}
             </span>
         </div>
@@ -21,182 +22,135 @@
 
     @php($user = auth()->user())
 
-    <div class="py-10 bg-gray-100 min-h-screen">
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+    <div class="py-8 bg-gray-100 min-h-screen">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
 
-            {{-- Tarjeta de resumen principal --}}
-            <div class="bg-white rounded-2xl shadow-sm border border-gray-200 px-6 py-5 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-                <div>
-                    <p class="text-xs font-semibold tracking-widest text-indigo-500 uppercase mb-1">
-                        Bienvenido de vuelta
-                    </p>
-                    <h3 class="text-2xl font-bold text-gray-900">
-                        {{ $user->name }}
-                    </h3>
-                    <p class="mt-1 text-sm text-gray-500">
-                        Mantén tu información actualizada y revisa el estado de tu perfil como socio.
-                    </p>
-                </div>
+            {{-- FILA 1: 3 tarjetas de “estadísticas” tipo dashboard --}}
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
 
-                <div class="flex flex-col items-start md:items-end gap-2 text-sm">
-                    <div class="flex items-center gap-2">
-                        <span class="font-semibold text-gray-500">Rol:</span>
-                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-50 text-indigo-700 border border-indigo-200">
-                            {{ optional($user->role)->name ? ucfirst($user->role->name) : 'Sin rol asignado' }}
-                        </span>
-                    </div>
-                    <div class="flex items-center gap-2">
-                        <span class="font-semibold text-gray-500">Email:</span>
-                        <span class="text-gray-700">{{ $user->email }}</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-
-                {{-- Columna izquierda: menú tipo “secciones” --}}
-                <div class="space-y-4">
-
-                    {{-- Mi Perfil (activo) --}}
-                    <a href="{{ route('profile.edit') }}"
-                       class="flex items-center gap-4 bg-white rounded-2xl border border-indigo-100 shadow-sm hover:shadow-md hover:border-indigo-300 transition-all p-4">
-                        <div class="h-12 w-12 rounded-xl bg-indigo-50 flex items-center justify-center text-2xl">
-                            👤
+                {{-- Card 1: Perfil --}}
+                <a href="{{ route('profile.edit') }}"
+                   class="group bg-white rounded-xl shadow-sm border border-gray-200 hover:border-emerald-400 hover:shadow-md transition-all">
+                    <div class="px-5 py-4 flex items-center gap-4">
+                        <div class="h-12 w-12 rounded-xl bg-emerald-50 flex items-center justify-center">
+                            <span class="text-2xl text-emerald-500">👤</span>
                         </div>
                         <div class="flex-1">
-                            <h4 class="font-semibold text-gray-900">Mi Perfil</h4>
-                            <p class="text-sm text-gray-500">Ver y editar tu información personal y de acceso.</p>
+                            <div class="flex items-center justify-between">
+                                <p class="text-xs font-semibold uppercase tracking-wide text-emerald-600">
+                                    Perfil
+                                </p>
+                                <span class="text-[11px] text-emerald-500 font-semibold group-hover:text-emerald-600">
+                                    Editar →
+                                </span>
+                            </div>
+                            <p class="mt-1 text-base font-semibold text-gray-900">
+                                {{ $user->name }}
+                            </p>
+                            <p class="text-xs text-gray-500">
+                                Gestiona tus datos de acceso.
+                            </p>
                         </div>
-                        <span class="text-xs text-indigo-500 font-semibold">
-                            Abrir →
-                        </span>
+                    </div>
+                </a>
+
+                        {{-- Card 2: Membresía --}}
+                        <a href="{{ route('client.memberships.index') }}" class="group bg-white rounded-xl shadow-sm border border-gray-200 hover:border-sky-400 hover:shadow-md transition-all">
+                            <div class="px-5 py-4 flex items-center gap-4">
+                                <div class="h-12 w-12 rounded-xl bg-sky-50 flex items-center justify-center">
+                                    <span class="text-2xl text-sky-500">🎫</span>
+                                </div>
+                                <div class="flex-1">
+                                    <div class="flex items-center justify-between">
+                                        <p class="text-xs font-semibold uppercase tracking-wide text-sky-600">
+                                            Membresía
+                                        </p>
+                                        <span class="text-[11px] text-sky-500 font-semibold group-hover:text-sky-600">
+                                            Ver →
+                                        </span>
+                                    </div>
+                                    <p class="mt-1 text-base font-semibold text-gray-900">
+                                        {{ auth()->user()->memberships()->where('is_active', true)->first()?->plan_name ?? 'Sin plan' }}
+                                    </p>
+                                    <p class="text-xs text-gray-500">
+                                        Tu plan y vencimiento.
+                                    </p>
+                                </div>
+                            </div>
+                        </a>                {{-- Card 3: Asistencia / Pagos --}}
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200">
+                    <div class="px-5 py-4">
+                        <p class="text-xs font-semibold uppercase tracking-wide text-purple-600">
+                            Tu Actividad
+                        </p>
+                        <div class="mt-3 space-y-2">
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-gray-600">Visitas este mes</span>
+                                <span class="text-lg font-bold text-purple-900">{{ auth()->user()->attendance()->whereMonth('check_in', now()->month)->count() }}</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-gray-600">Total visitas</span>
+                                <span class="text-lg font-bold text-purple-900">{{ auth()->user()->attendance()->count() }}</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-gray-600">Pagos</span>
+                                <span class="text-lg font-bold text-purple-900">{{ auth()->user()->payments()->count() }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                    <a href="{{ route('client.attendance.index') }}" class="group bg-white rounded-xl shadow-sm border border-gray-200 hover:border-orange-400 hover:shadow-md transition-all">
+                        <div class="px-5 py-4 flex items-center gap-4">
+                            <div class="h-12 w-12 rounded-xl bg-orange-50 flex items-center justify-center">
+                                <span class="text-2xl text-orange-500">📊</span>
+                            </div>
+                            <div class="flex-1">
+                                <div class="flex items-center justify-between">
+                                    <p class="text-xs font-semibold uppercase tracking-wide text-orange-600">
+                                        Asistencia
+                                    </p>
+                                    <span class="text-[11px] text-orange-500 font-semibold group-hover:text-orange-600">
+                                        Ver →
+                                    </span>
+                                </div>
+                                <p class="mt-1 text-base font-semibold text-gray-900">
+                                    {{ auth()->user()->attendance()->count() }} visitas
+                                </p>
+                                <p class="text-xs text-gray-500">
+                                    Tu historial de entradas.
+                                </p>
+                            </div>
+                        </div>
                     </a>
 
-                    {{-- Mi Membresía --}}
-                    <div class="flex items-center gap-4 bg-white rounded-2xl border border-gray-200 shadow-sm p-4 opacity-80">
-                        <div class="h-12 w-12 rounded-xl bg-yellow-50 flex items-center justify-center text-2xl">
-                            🎫
-                        </div>
-                        <div class="flex-1">
-                            <h4 class="font-semibold text-gray-900">Mi Membresía</h4>
-                            <p class="text-sm text-gray-500">
-                                Próximamente podrás ver tu plan, vencimiento y beneficios.
-                            </p>
-                        </div>
-                        <span class="inline-flex px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-gray-100 text-gray-500 border border-gray-200">
-                            En desarrollo
-                        </span>
-                    </div>
-
-                    {{-- Historial de Pagos --}}
-                    <div class="flex items-center gap-4 bg-white rounded-2xl border border-gray-200 shadow-sm p-4 opacity-80">
-                        <div class="h-12 w-12 rounded-xl bg-emerald-50 flex items-center justify-center text-2xl">
-                            💳
-                        </div>
-                        <div class="flex-1">
-                            <h4 class="font-semibold text-gray-900">Historial de Pagos</h4>
-                            <p class="text-sm text-gray-500">
-                                Aquí verás tus pagos realizados y próximos cargos.
-                            </p>
-                        </div>
-                        <span class="inline-flex px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-gray-100 text-gray-500 border border-gray-200">
-                            Próximamente
-                        </span>
-                    </div>
-
-                    {{-- Mi Asistencia --}}
-                    <div class="flex items-center gap-4 bg-white rounded-2xl border border-gray-200 shadow-sm p-4 opacity-80">
-                        <div class="h-12 w-12 rounded-xl bg-sky-50 flex items-center justify-center text-2xl">
-                            📊
-                        </div>
-                        <div class="flex-1">
-                            <h4 class="font-semibold text-gray-900">Mi Asistencia</h4>
-                            <p class="text-sm text-gray-500">
-                                Lleva el control de tus visitas y progreso en el gimnasio.
-                            </p>
-                        </div>
-                        <span class="inline-flex px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-gray-100 text-gray-500 border border-gray-200">
-                            Próximamente
-                        </span>
-                    </div>
-                </div>
-
-                {{-- Columna derecha: tarjetas de resumen / info de cuenta --}}
-                <div class="lg:col-span-2 space-y-6">
-
-                    {{-- Info de cuenta tipo “card” --}}
-                    <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
-                        <div class="flex items-center justify-between mb-4">
-                            <div>
-                                <h4 class="font-semibold text-gray-900">Información de tu cuenta</h4>
-                                <p class="text-sm text-gray-500">
-                                    Datos básicos registrados en el sistema.
+                    <a href="{{ route('client.payments.index') }}" class="group bg-white rounded-xl shadow-sm border border-gray-200 hover:border-red-400 hover:shadow-md transition-all">
+                        <div class="px-5 py-4 flex items-center gap-4">
+                            <div class="h-12 w-12 rounded-xl bg-red-50 flex items-center justify-center">
+                                <span class="text-2xl text-red-500">💳</span>
+                            </div>
+                            <div class="flex-1">
+                                <div class="flex items-center justify-between">
+                                    <p class="text-xs font-semibold uppercase tracking-wide text-red-600">
+                                        Pagos
+                                    </p>
+                                    <span class="text-[11px] text-red-500 font-semibold group-hover:text-red-600">
+                                        Ver →
+                                    </span>
+                                </div>
+                                <p class="mt-1 text-base font-semibold text-gray-900">
+                                    {{ auth()->user()->payments()->count() }} registros
+                                </p>
+                                <p class="text-xs text-gray-500">
+                                    Tu historial de transacciones.
                                 </p>
                             </div>
                         </div>
-
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
-                            <div class="space-y-1">
-                                <p class="text-gray-500 font-semibold">Nombre completo</p>
-                                <p class="text-gray-800">{{ $user->name }}</p>
-                            </div>
-
-                            <div class="space-y-1">
-                                <p class="text-gray-500 font-semibold">Correo electrónico</p>
-                                <p class="text-gray-800">{{ $user->email }}</p>
-                            </div>
-
-                            <div class="space-y-1">
-                                <p class="text-gray-500 font-semibold">Rol en el sistema</p>
-                                <p class="text-gray-800">
-                                    {{ optional($user->role)->name ? ucfirst($user->role->name) : 'Sin rol asignado' }}
-                                </p>
-                            </div>
-
-                            <div class="space-y-1">
-                                <p class="text-gray-500 font-semibold">Estado de la cuenta</p>
-                                <p class="text-gray-800">
-                                    {{ $user->is_active ? 'Activa' : 'Inactiva' }}
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-
-                    {{-- Card dummy tipo “estadísticas” (relleno bonito para la ADA) --}}
-                    <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
-                        <div class="flex items-center justify-between mb-4">
-                            <div>
-                                <h4 class="font-semibold text-gray-900">Resumen rápido</h4>
-                                <p class="text-sm text-gray-500">
-                                    Módulos que se activarán en futuras versiones.
-                                </p>
-                            </div>
-                        </div>
-
-                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm">
-                            <div class="rounded-xl border border-gray-200 px-4 py-3">
-                                <p class="text-gray-500 text-xs font-semibold uppercase">Membresía</p>
-                                <p class="mt-1 text-gray-900 font-bold text-lg">—</p>
-                                <p class="text-xs text-gray-400 mt-1">Aún no disponible.</p>
-                            </div>
-
-                            <div class="rounded-xl border border-gray-200 px-4 py-3">
-                                <p class="text-gray-500 text-xs font-semibold uppercase">Visitas este mes</p>
-                                <p class="mt-1 text-gray-900 font-bold text-lg">—</p>
-                                <p class="text-xs text-gray-400 mt-1">Se mostrará tu asistencia.</p>
-                            </div>
-
-                            <div class="rounded-xl border border-gray-200 px-4 py-3">
-                                <p class="text-gray-500 text-xs font-semibold uppercase">Último pago</p>
-                                <p class="mt-1 text-gray-900 font-bold text-lg">—</p>
-                                <p class="text-xs text-gray-400 mt-1">Se integrará el historial de pagos.</p>
-                            </div>
-                        </div>
-                    </div>
-
+                    </a>
                 </div>
 
             </div>
-        </div>
-    </div>
+
+            {{-- FILA 2: layout tipo “cards de contenido” como el tablero central --}}
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
+
 </x-app-layout>

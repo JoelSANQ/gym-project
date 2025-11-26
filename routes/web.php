@@ -4,8 +4,12 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\AdminDashboardController;
+use App\Http\Controllers\Admin\ClassController;
 use App\Http\Controllers\Staff\StaffDashboardController;
 use App\Http\Controllers\Client\ClientDashboardController;
+use App\Http\Controllers\Client\MembershipController;
+use App\Http\Controllers\Client\AttendanceController;
+use App\Http\Controllers\Client\PaymentController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -57,7 +61,10 @@ Route::middleware(['auth', 'verified', 'role:admin'])
         Route::delete('users/{user}/force-delete', [UserController::class, 'forceDelete'])
             ->name('users.forceDelete');
 
-        // TODO: Gestión de Clases, Membresías, Pagos y Reportes
+        // Gestión de Clases
+        Route::resource('classes', ClassController::class);
+        Route::patch('classes/{class}/activate', [ClassController::class, 'activate'])
+            ->name('classes.activate');
     });
 
 // ============================================
@@ -83,5 +90,17 @@ Route::middleware(['auth', 'verified', 'role:client'])
         Route::get('/dashboard', [ClientDashboardController::class, 'index'])
             ->name('dashboard');
 
-        // TODO: Ver membresía, historial de pagos, asistencia
+        // Membresías
+        Route::get('/memberships', [MembershipController::class, 'index'])
+            ->name('memberships.index');
+        Route::get('/memberships/{membership}', [MembershipController::class, 'show'])
+            ->name('memberships.show');
+
+        // Asistencia
+        Route::get('/attendance', [AttendanceController::class, 'index'])
+            ->name('attendance.index');
+
+        // Pagos
+        Route::get('/payments', [PaymentController::class, 'index'])
+            ->name('payments.index');
     });
