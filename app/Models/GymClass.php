@@ -30,4 +30,9 @@ class GymClass extends Model
     {
         return $this->belongsTo(User::class, 'trainer_id');
     }
+
+    public function schedules()
+    {
+        return $this->hasMany(ClassSchedule::class, 'class_id');
+    }
 }

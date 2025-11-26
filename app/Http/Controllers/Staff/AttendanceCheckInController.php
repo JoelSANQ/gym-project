@@ -15,7 +15,7 @@ class AttendanceCheckInController extends Controller
     {
         $clientRole = Role::where('name', 'client')->first();
         $members = User::where('role_id', $clientRole->id)->get();
-        $classes = GymClass::where('is_active', true)->get();
+        $classes = GymClass::where('is_active', true)->with('schedules')->get();
 
         return view('staff.attendance.index', compact('members', 'classes'));
     }
@@ -25,12 +25,20 @@ class AttendanceCheckInController extends Controller
         $data = $request->validate([
             'user_id' => ['required', 'exists:users,id'],
             'class_id' => ['required', 'exists:classes,id'],
-            'check_in' => ['required', 'date_format:Y-m-d H:i'],
+            'date' => ['required', 'date'],
+            'check_in' => ['required', 'date_format:H:i'],
         ]);
 
-        $data['check_in'] = \Carbon\Carbon::createFromFormat('Y-m-d H:i', $data['check_in']);
+        // Combina la fecha y el bloque horario
+        $date = $request->input('date');
+        $time = $request->input('check_in');
+        $checkInDateTime = \Carbon\Carbon::createFromFormat('Y-m-d H:i', "$date $time");
 
-        Attendance::create($data);
+        Attendance::create([
+            'user_id' => $data['user_id'],
+            'class_id' => $data['class_id'],
+            'check_in' => $checkInDateTime,
+        ]);
 
         return redirect()
             ->route('staff.attendance.index')

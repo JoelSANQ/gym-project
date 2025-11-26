@@ -7,6 +7,7 @@ use App\Models\Role;
 use App\Models\GymClass;
 use App\Models\Membership;
 use App\Models\Attendance;
+use App\Models\ClassSchedule;
 use App\Models\Payment;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -91,6 +92,45 @@ class DatabaseSeeder extends Seeder
                 'trainer_id' => null,
                 'is_active' => true,
             ]
+        );
+
+        // Crear horarios para Yoga (Lunes, Miércoles, Viernes)
+        ClassSchedule::firstOrCreate(
+            ['class_id' => $yoga->id, 'day_of_week' => 1],
+            ['day_name' => 'Lunes', 'start_time' => '06:00:00', 'end_time' => '07:00:00']
+        );
+        ClassSchedule::firstOrCreate(
+            ['class_id' => $yoga->id, 'day_of_week' => 3],
+            ['day_name' => 'Miércoles', 'start_time' => '06:00:00', 'end_time' => '07:00:00']
+        );
+        ClassSchedule::firstOrCreate(
+            ['class_id' => $yoga->id, 'day_of_week' => 5],
+            ['day_name' => 'Viernes', 'start_time' => '06:00:00', 'end_time' => '07:00:00']
+        );
+
+        // Crear horarios para CrossFit (Martes, Jueves, Sábado)
+        ClassSchedule::firstOrCreate(
+            ['class_id' => $crossfit->id, 'day_of_week' => 2],
+            ['day_name' => 'Martes', 'start_time' => '18:00:00', 'end_time' => '19:00:00']
+        );
+        ClassSchedule::firstOrCreate(
+            ['class_id' => $crossfit->id, 'day_of_week' => 4],
+            ['day_name' => 'Jueves', 'start_time' => '18:00:00', 'end_time' => '19:00:00']
+        );
+        ClassSchedule::firstOrCreate(
+            ['class_id' => $crossfit->id, 'day_of_week' => 6],
+            ['day_name' => 'Sábado', 'start_time' => '18:00:00', 'end_time' => '19:00:00']
+        );
+
+        // Crear horarios para Spinning (Lunes, Miércoles)
+        $spinning = GymClass::where('name', 'Spinning')->first();
+        ClassSchedule::firstOrCreate(
+            ['class_id' => $spinning->id, 'day_of_week' => 1],
+            ['day_name' => 'Lunes', 'start_time' => '19:00:00', 'end_time' => '20:00:00']
+        );
+        ClassSchedule::firstOrCreate(
+            ['class_id' => $spinning->id, 'day_of_week' => 3],
+            ['day_name' => 'Miércoles', 'start_time' => '19:00:00', 'end_time' => '20:00:00']
         );
 
         // Crear membresía para el cliente

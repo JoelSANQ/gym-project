@@ -35,37 +35,26 @@
                         </a>
 
                         <!-- Gestión de Membresías -->
-                        <div class="block p-6 bg-gradient-to-br from-purple-50 to-purple-100 border border-purple-200 rounded-lg opacity-50 cursor-not-allowed">
+                        <a href="{{ route('admin.memberships.index') }}" class="block p-6 bg-gradient-to-br from-purple-50 to-purple-100 border border-purple-200 rounded-lg hover:shadow-lg transition">
                             <div class="flex items-center">
                                 <div class="text-4xl text-purple-600 mr-4">🎫</div>
                                 <div>
                                     <h4 class="font-bold text-lg text-purple-900">Gestión de Membresías</h4>
-                                    <p class="text-sm text-purple-700">Próximamente</p>
+                                    <p class="text-sm text-purple-700">Crear, editar y gestionar membresías</p>
                                 </div>
                             </div>
-                        </div>
+                        </a>
 
                         <!-- Gestión de Pagos -->
-                        <div class="block p-6 bg-gradient-to-br from-yellow-50 to-yellow-100 border border-yellow-200 rounded-lg opacity-50 cursor-not-allowed">
+                        <a href="{{ route('admin.payments.index') }}" class="block p-6 bg-gradient-to-br from-yellow-50 to-yellow-100 border border-yellow-200 rounded-lg hover:shadow-lg transition">
                             <div class="flex items-center">
                                 <div class="text-4xl text-yellow-600 mr-4">💳</div>
                                 <div>
                                     <h4 class="font-bold text-lg text-yellow-900">Gestión de Pagos</h4>
-                                    <p class="text-sm text-yellow-700">Próximamente</p>
+                                    <p class="text-sm text-yellow-700">Registrar y gestionar pagos</p>
                                 </div>
                             </div>
-                        </div>
-
-                        <!-- Reportes -->
-                        <div class="block p-6 bg-gradient-to-br from-red-50 to-red-100 border border-red-200 rounded-lg opacity-50 cursor-not-allowed">
-                            <div class="flex items-center">
-                                <div class="text-4xl text-red-600 mr-4">📊</div>
-                                <div>
-                                    <h4 class="font-bold text-lg text-red-900">Reportes</h4>
-                                    <p class="text-sm text-red-700">Próximamente</p>
-                                </div>
-                            </div>
-                        </div>
+                        </a>
                     </div>
                 </div>
             </div>

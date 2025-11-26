@@ -44,8 +44,11 @@
                                     class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" required>
                                     <option value="">-- Selecciona una clase --</option>
                                     @foreach ($classes as $class)
-                                        <option value="{{ $class->id }}">
-                                            {{ $class->name }} - {{ $class->schedule }}
+                                        @php
+                                            $dayNames = $class->schedules->pluck('day_name')->join(', ');
+                                        @endphp
+                                        <option value="{{ $class->id }}" data-schedules="{{ json_encode($class->schedules->pluck('day_of_week')) }}">
+                                            {{ $class->name }} ({{ $dayNames }})
                                         </option>
                                     @endforeach
                                 </select>
@@ -53,9 +56,26 @@
                             </div>
 
                             <div>
-                                <x-input-label for="check_in" value="Hora de Entrada" />
-                                <x-text-input id="check_in" name="check_in" type="datetime-local" 
+                                <x-input-label for="date" value="Fecha" />
+                                <x-text-input id="date" name="date" type="date" 
                                     class="mt-1 block w-full" required />
+                                <small class="text-gray-500 text-xs mt-1">Solo puedes seleccionar días disponibles para la clase</small>
+                                <x-input-error :messages="$errors->get('date')" class="mt-1" />
+                            </div>
+
+                            <div>
+                                <x-input-label for="check_in" value="Bloque Horario" />
+                                <select id="check_in" name="check_in"
+                                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" required>
+                                    <option value="">-- Selecciona un bloque --</option>
+                                    <option value="06:00">6:00 - 7:00 AM</option>
+                                    <option value="07:00">7:00 - 8:00 AM</option>
+                                    <option value="08:00">8:00 - 9:00 AM</option>
+                                    <option value="17:00">5:00 - 6:00 PM</option>
+                                    <option value="18:00">6:00 - 7:00 PM</option>
+                                    <option value="19:00">7:00 - 8:00 PM</option>
+                                    <option value="20:00">8:00 - 9:00 PM</option>
+                                </select>
                                 <x-input-error :messages="$errors->get('check_in')" class="mt-1" />
                             </div>
                         </div>
@@ -80,8 +100,9 @@
                         <ul class="text-xs text-blue-800 space-y-1">
                             <li>1. Selecciona el socio que entra</li>
                             <li>2. Selecciona la clase a la que asiste</li>
-                            <li>3. Confirma la hora de entrada</li>
-                            <li>4. Haz clic en Registrar</li>
+                            <li>3. Selecciona un día disponible para esa clase</li>
+                            <li>4. Selecciona el bloque horario</li>
+                            <li>5. Haz clic en Registrar</li>
                         </ul>
                     </div>
                 </div>
@@ -153,4 +174,46 @@
             </div>
         </div>
     </div>
+
+    <script>
+        const classSelect = document.getElementById('class_id');
+        const dateInput = document.getElementById('date');
+
+        classSelect.addEventListener('change', function() {
+            const selectedOption = this.options[this.selectedIndex];
+            const schedulesJson = selectedOption.getAttribute('data-schedules');
+            
+            if (!schedulesJson) {
+                dateInput.removeAttribute('data-allowed-days');
+                return;
+            }
+
+            const allowedDays = JSON.parse(schedulesJson);
+            dateInput.setAttribute('data-allowed-days', JSON.stringify(allowedDays));
+            dateInput.value = '';
+        });
+
+        // Validar que el día seleccionado sea válido para la clase
+        dateInput.addEventListener('change', function() {
+            const classId = classSelect.value;
+            if (!classId) {
+                alert('Por favor selecciona una clase primero');
+                this.value = '';
+                return;
+            }
+
+            const selectedDate = new Date(this.value);
+            const dayOfWeek = selectedDate.getDay(); // 0=Domingo, 1=Lunes, etc
+            
+            const allowedDaysJson = this.getAttribute('data-allowed-days');
+            if (!allowedDaysJson) return;
+
+            const allowedDays = JSON.parse(allowedDaysJson);
+            
+            if (!allowedDays.includes(dayOfWeek)) {
+                alert('Esta clase no se imparte en ese día. Por favor selecciona otro día.');
+                this.value = '';
+            }
+        });
+    </script>
 </x-app-layout>

@@ -66,11 +66,11 @@ return [
     */
 'timezone' => 'America/Mexico_City',
 
-'locale' => env('APP_LOCALE', 'es'),
+'locale' => env( 'es'),
 
-'fallback_locale' => env('APP_FALLBACK_LOCALE', 'es'),
+'fallback_locale' => env('es'),
 
-'faker_locale' => env('APP_FAKER_LOCALE', 'es_MX'),
+'faker_locale' => env( 'es_MX'),
     /*
     |--------------------------------------------------------------------------
     | Encryption Key

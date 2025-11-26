@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\ClassController;
+use App\Http\Controllers\Admin\MembershipController as AdminMembershipController;
+use App\Http\Controllers\Admin\PaymentController as AdminPaymentController;
 use App\Http\Controllers\Staff\StaffDashboardController;
 use App\Http\Controllers\Staff\MemberController;
 use App\Http\Controllers\Staff\AttendanceCheckInController;
@@ -16,7 +18,7 @@ use App\Http\Controllers\Client\AttendanceController;
 use App\Http\Controllers\Client\PaymentController;
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('login');
 });
 
 // Dashboard general - redirige según el rol del usuario
@@ -69,6 +71,12 @@ Route::middleware(['auth', 'verified', 'role:admin'])
         Route::resource('classes', ClassController::class);
         Route::patch('classes/{class}/activate', [ClassController::class, 'activate'])
             ->name('classes.activate');
+
+        // Gestión de Membresías
+        Route::resource('memberships', AdminMembershipController::class);
+
+        // Gestión de Pagos
+        Route::resource('payments', AdminPaymentController::class);
     });
 
 // ============================================
