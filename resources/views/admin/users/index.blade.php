@@ -111,12 +111,14 @@
                                         </td>
 
                                         <td class="px-3 py-2 text-right space-x-2">
+                                            {{-- Editar --}}
                                             <a href="{{ route('admin.users.edit', $user) }}"
                                                class="text-indigo-600 hover:text-indigo-800 text-xs font-medium">
                                                 Editar
                                             </a>
 
                                             @if($user->is_active)
+                                                {{-- Desactivar --}}
                                                 <form action="{{ route('admin.users.destroy', $user) }}"
                                                       method="POST" class="inline">
                                                     @csrf
@@ -125,6 +127,30 @@
                                                         onclick="return confirm('¿Desactivar este usuario?')"
                                                         class="text-red-600 hover:text-red-800 text-xs font-medium">
                                                         Desactivar
+                                                    </button>
+                                                </form>
+                                            @else
+                                                {{-- Reactivar --}}
+                                                <form action="{{ route('admin.users.activate', $user) }}"
+                                                      method="POST" class="inline">
+                                                    @csrf
+                                                    @method('PATCH')
+                                                    <button type="submit"
+                                                        onclick="return confirm('¿Reactivar este usuario?')"
+                                                        class="text-emerald-600 hover:text-emerald-800 text-xs font-medium">
+                                                        Reactivar
+                                                    </button>
+                                                </form>
+
+                                                {{-- Eliminar --}}
+                                                <form action="{{ route('admin.users.forceDelete', $user) }}"
+                                                      method="POST" class="inline">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit"
+                                                        onclick="return confirm('¿Eliminar permanentemente este usuario? Esta acción no se puede deshacer.')"
+                                                        class="text-red-600 hover:text-red-800 text-xs font-medium">
+                                                        Eliminar
                                                     </button>
                                                 </form>
                                             @endif
