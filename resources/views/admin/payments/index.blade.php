@@ -71,8 +71,7 @@
                                                     Editar
                                                 </a>
                                                 <form action="{{ route('admin.payments.destroy', $payment) }}"
-                                                      method="POST" class="inline"
-                                                      onsubmit="return confirm('¿Eliminar pago?')">
+                                                      method="POST" class="inline swal-form" data-title="Eliminar pago" data-text="¿Eliminar este pago?">
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit" class="text-red-600 hover:text-red-800 font-medium text-sm">

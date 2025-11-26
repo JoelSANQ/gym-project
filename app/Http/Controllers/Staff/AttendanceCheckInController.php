@@ -34,6 +34,20 @@ class AttendanceCheckInController extends Controller
         $time = $request->input('check_in');
         $checkInDateTime = \Carbon\Carbon::createFromFormat('Y-m-d H:i', "$date $time");
 
+        // Verificar capacidad de la clase para la fecha seleccionada
+        $gymClass = GymClass::find($data['class_id']);
+        if ($gymClass && $gymClass->capacity) {
+            $currentCount = Attendance::where('class_id', $gymClass->id)
+                ->whereDate('check_in', $date)
+                ->count();
+
+            if ($currentCount >= $gymClass->capacity) {
+                return redirect()
+                    ->route('staff.attendance.index')
+                    ->with('error', 'Cupo completo para esa clase en la fecha seleccionada. Por favor selecciona otra actividad.');
+            }
+        }
+
         Attendance::create([
             'user_id' => $data['user_id'],
             'class_id' => $data['class_id'],

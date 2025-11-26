@@ -146,6 +146,29 @@
                             </div>
                         </div>
                     </a>
+                    <a href="{{ route('client.classes.index') }}" class="group bg-white rounded-xl shadow-sm border border-gray-200 hover:border-indigo-400 hover:shadow-md transition-all">
+                        <div class="px-5 py-4 flex items-center gap-4">
+                            <div class="h-12 w-12 rounded-xl bg-indigo-50 flex items-center justify-center">
+                                <span class="text-2xl text-indigo-500">🏷️</span>
+                            </div>
+                            <div class="flex-1">
+                                <div class="flex items-center justify-between">
+                                    <p class="text-xs font-semibold uppercase tracking-wide text-indigo-600">
+                                        Mis Clases
+                                    </p>
+                                    <span class="text-[11px] text-indigo-500 font-semibold group-hover:text-indigo-600">
+                                        Ver →
+                                    </span>
+                                </div>
+                                <p class="mt-1 text-base font-semibold text-gray-900">
+                                    Ver clases a las que te has anotado
+                                </p>
+                                <p class="text-xs text-gray-500">
+                                    Historial de inscripciones y últimas asistencias.
+                                </p>
+                            </div>
+                        </div>
+                    </a>
                 </div>
 
             </div>

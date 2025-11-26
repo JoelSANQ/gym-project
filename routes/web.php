@@ -16,6 +16,7 @@ use App\Http\Controllers\Client\ClientDashboardController;
 use App\Http\Controllers\Client\MembershipController;
 use App\Http\Controllers\Client\AttendanceController;
 use App\Http\Controllers\Client\PaymentController;
+use App\Http\Controllers\Client\EnrolledClassController;
 
 Route::get('/', function () {
     return redirect()->route('login');
@@ -133,4 +134,8 @@ Route::middleware(['auth', 'verified', 'role:client'])
         // Pagos
         Route::get('/payments', [PaymentController::class, 'index'])
             ->name('payments.index');
+
+        // Clases anotadas / inscritas
+        Route::get('/classes', [EnrolledClassController::class, 'index'])
+            ->name('classes.index');
     });

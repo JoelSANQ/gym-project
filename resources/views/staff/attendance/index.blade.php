@@ -47,7 +47,7 @@
                                         @php
                                             $dayNames = $class->schedules->pluck('day_name')->join(', ');
                                         @endphp
-                                        <option value="{{ $class->id }}" data-schedules="{{ json_encode($class->schedules->pluck('day_of_week')) }}">
+                                        <option value="{{ $class->id }}">
                                             {{ $class->name }} ({{ $dayNames }})
                                         </option>
                                     @endforeach
@@ -59,7 +59,7 @@
                                 <x-input-label for="date" value="Fecha" />
                                 <x-text-input id="date" name="date" type="date" 
                                     class="mt-1 block w-full" required />
-                                <small class="text-gray-500 text-xs mt-1">Solo puedes seleccionar días disponibles para la clase</small>
+                                <small class="text-gray-500 text-xs mt-1">Selecciona la fecha de la entrada</small>
                                 <x-input-error :messages="$errors->get('date')" class="mt-1" />
                             </div>
 
@@ -175,45 +175,5 @@
         </div>
     </div>
 
-    <script>
-        const classSelect = document.getElementById('class_id');
-        const dateInput = document.getElementById('date');
-
-        classSelect.addEventListener('change', function() {
-            const selectedOption = this.options[this.selectedIndex];
-            const schedulesJson = selectedOption.getAttribute('data-schedules');
-            
-            if (!schedulesJson) {
-                dateInput.removeAttribute('data-allowed-days');
-                return;
-            }
-
-            const allowedDays = JSON.parse(schedulesJson);
-            dateInput.setAttribute('data-allowed-days', JSON.stringify(allowedDays));
-            dateInput.value = '';
-        });
-
-        // Validar que el día seleccionado sea válido para la clase
-        dateInput.addEventListener('change', function() {
-            const classId = classSelect.value;
-            if (!classId) {
-                alert('Por favor selecciona una clase primero');
-                this.value = '';
-                return;
-            }
-
-            const selectedDate = new Date(this.value);
-            const dayOfWeek = selectedDate.getDay(); // 0=Domingo, 1=Lunes, etc
-            
-            const allowedDaysJson = this.getAttribute('data-allowed-days');
-            if (!allowedDaysJson) return;
-
-            const allowedDays = JSON.parse(allowedDaysJson);
-            
-            if (!allowedDays.includes(dayOfWeek)) {
-                alert('Esta clase no se imparte en ese día. Por favor selecciona otro día.');
-                this.value = '';
-            }
-        });
-    </script>
+    <!-- Removed client-side date restrictions so staff can choose any date. Capacity is validated server-side. -->
 </x-app-layout>

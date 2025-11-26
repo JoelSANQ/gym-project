@@ -82,6 +82,13 @@ class UserController extends Controller
     // DESACTIVAR (no borrar físico)
     public function destroy(User $user)
     {
+        // Prohibir desactivar/eliminar al usuario administrador
+        if ($user->role && $user->role->name === 'admin') {
+            return redirect()
+                ->route('admin.users.index')
+                ->with('error', 'Acción prohibida: no se puede desactivar al usuario administrador.');
+        }
+
         $user->update(['is_active' => false]);
 
         return redirect()
@@ -102,6 +109,13 @@ class UserController extends Controller
     // ELIMINAR (borrado físico)
     public function forceDelete(User $user)
     {
+        // Prohibir eliminar al usuario administrador
+        if ($user->role && $user->role->name === 'admin') {
+            return redirect()
+                ->route('admin.users.index')
+                ->with('error', 'Acción prohibida: no se puede eliminar al usuario administrador.');
+        }
+
         $user->forceDelete();
 
         return redirect()

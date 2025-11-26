@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Membership;
 use App\Models\User;
 use App\Models\Role;
+use App\Models\Payment;
 use Illuminate\Http\Request;
 
 class MembershipController extends Controller
@@ -37,7 +38,21 @@ class MembershipController extends Controller
 
         $data['is_active'] = $request->has('is_active');
 
-        Membership::create($data);
+        $membership = Membership::create($data);
+
+        // Si la membresía tiene precio, registrar un pago asociado (admin manual)
+        if (!empty($membership->price) && $membership->price > 0) {
+            Payment::create([
+                'user_id' => $membership->user_id,
+                'membership_id' => $membership->id,
+                'concept' => 'Membresía: ' . $membership->plan_name,
+                'amount' => $membership->price,
+                'payment_method' => 'manual',
+                'status' => 'completed',
+                'payment_date' => now(),
+                'notes' => 'Pago registrado automáticamente al asignar membresía desde administración.',
+            ]);
+        }
 
         return redirect()
             ->route('admin.memberships.index')

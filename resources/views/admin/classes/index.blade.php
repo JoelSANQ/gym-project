@@ -107,24 +107,24 @@
 
                                             @if($class->is_active)
                                                 {{-- Desactivar --}}
-                                                <form action="{{ route('admin.classes.destroy', $class) }}"
-                                                      method="POST" class="inline">
+                                                                                                <form action="{{ route('admin.classes.destroy', $class) }}"
+                                                                                                            method="POST" class="inline swal-form" data-title="Desactivar clase" data-text="¿Desactivar esta clase?">
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit"
-                                                        onclick="return confirm('¿Desactivar esta clase?')"
+                                                                                                                onclick="return confirm('¿Desactivar esta clase?')"
                                                         class="text-red-600 hover:text-red-800 text-xs font-medium">
                                                         Desactivar
                                                     </button>
                                                 </form>
                                             @else
                                                 {{-- Reactivar --}}
-                                                <form action="{{ route('admin.classes.activate', $class) }}"
-                                                      method="POST" class="inline">
+                                                                                                <form action="{{ route('admin.classes.activate', $class) }}"
+                                                                                                            method="POST" class="inline swal-form" data-title="Reactivar clase" data-text="¿Reactivar esta clase?">
                                                     @csrf
                                                     @method('PATCH')
                                                     <button type="submit"
-                                                        onclick="return confirm('¿Reactivar esta clase?')"
+                                                                                                                onclick="return confirm('¿Reactivar esta clase?')"
                                                         class="text-emerald-600 hover:text-emerald-800 text-xs font-medium">
                                                         Reactivar
                                                     </button>

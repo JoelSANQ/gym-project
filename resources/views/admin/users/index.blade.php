@@ -117,42 +117,45 @@
                                                 Editar
                                             </a>
 
-                                            @if($user->is_active)
-                                                {{-- Desactivar --}}
-                                                <form action="{{ route('admin.users.destroy', $user) }}"
-                                                      method="POST" class="inline">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit"
-                                                        onclick="return confirm('¿Desactivar este usuario?')"
-                                                        class="text-red-600 hover:text-red-800 text-xs font-medium">
-                                                        Desactivar
-                                                    </button>
-                                                </form>
-                                            @else
-                                                {{-- Reactivar --}}
-                                                <form action="{{ route('admin.users.activate', $user) }}"
-                                                      method="POST" class="inline">
-                                                    @csrf
-                                                    @method('PATCH')
-                                                    <button type="submit"
-                                                        onclick="return confirm('¿Reactivar este usuario?')"
-                                                        class="text-emerald-600 hover:text-emerald-800 text-xs font-medium">
-                                                        Reactivar
-                                                    </button>
-                                                </form>
+                                            @php $isAdmin = ($roleName === 'admin'); @endphp
 
-                                                {{-- Eliminar --}}
-                                                <form action="{{ route('admin.users.forceDelete', $user) }}"
-                                                      method="POST" class="inline">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit"
-                                                        onclick="return confirm('¿Eliminar permanentemente este usuario? Esta acción no se puede deshacer.')"
-                                                        class="text-red-600 hover:text-red-800 text-xs font-medium">
-                                                        Eliminar
-                                                    </button>
-                                                </form>
+                                            @if($isAdmin)
+                                                <span class="inline-flex items-center px-2 py-1 text-xs font-medium text-gray-600">Protegido</span>
+                                            @else
+                                                @if($user->is_active)
+                                                    {{-- Desactivar --}}
+                                                    <form action="{{ route('admin.users.destroy', $user) }}"
+                                                          method="POST" class="inline swal-form" data-title="Desactivar usuario" data-text="¿Desactivar este usuario?">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit"
+                                                            class="text-red-600 hover:text-red-800 text-xs font-medium">
+                                                            Desactivar
+                                                        </button>
+                                                    </form>
+                                                @else
+                                                    {{-- Reactivar --}}
+                                                    <form action="{{ route('admin.users.activate', $user) }}"
+                                                          method="POST" class="inline swal-form" data-title="Reactivar usuario" data-text="¿Reactivar este usuario?">
+                                                        @csrf
+                                                        @method('PATCH')
+                                                        <button type="submit"
+                                                            class="text-emerald-600 hover:text-emerald-800 text-xs font-medium">
+                                                            Reactivar
+                                                        </button>
+                                                    </form>
+
+                                                    {{-- Eliminar --}}
+                                                    <form action="{{ route('admin.users.forceDelete', $user) }}"
+                                                          method="POST" class="inline swal-form" data-title="Eliminar usuario" data-text="¿Eliminar permanentemente este usuario? Esta acción no se puede deshacer.">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit"
+                                                            class="text-red-600 hover:text-red-800 text-xs font-medium">
+                                                            Eliminar
+                                                        </button>
+                                                    </form>
+                                                @endif
                                             @endif
                                         </td>
                                     </tr>

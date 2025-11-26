@@ -62,8 +62,7 @@
                                                     Editar
                                                 </a>
                                                 <form action="{{ route('admin.memberships.destroy', $membership) }}"
-                                                      method="POST" class="inline"
-                                                      onsubmit="return confirm('¿Eliminar membresía?')">
+                                                      method="POST" class="inline swal-form" data-title="Eliminar membresía" data-text="¿Eliminar esta membresía?">
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit" class="text-red-600 hover:text-red-800 font-medium text-sm">
