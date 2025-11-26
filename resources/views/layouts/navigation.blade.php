@@ -1,6 +1,6 @@
-<nav x-data="{ open: false }" class="bg-white border-b border-gray-100">
+<nav x-data="{ open: false }" class="bg-yellow-200 border-b border-gray-100">
     <!-- Primary Navigation Menu -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 ">
         <div class="flex justify-between h-16">
             <div class="flex">
                 <!-- Logo -->
@@ -17,11 +17,7 @@
                         {{ __('Dashboard') }}
                     </x-nav-link>
 
-                    {{-- Link a CRUD de usuarios (solo admin/staff si usas el Gate) --}}
-                   
-                        <x-nav-link :href="route('admin.users.index')" :active="request()->routeIs('admin.users.*')">
-                            {{ __('Usuarios') }}
-                        </x-nav-link>
+                
                    
                 </div>
             </div>
@@ -87,9 +83,7 @@
             </x-responsive-nav-link>
 
            
-                <x-responsive-nav-link :href="route('admin.users.index')" :active="request()->routeIs('admin.users.*')">
-                    {{ __('Usuarios') }}
-                </x-responsive-nav-link>
+             
       
         </div>
 

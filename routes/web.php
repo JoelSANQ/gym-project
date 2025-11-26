@@ -6,6 +6,10 @@ use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\ClassController;
 use App\Http\Controllers\Staff\StaffDashboardController;
+use App\Http\Controllers\Staff\MemberController;
+use App\Http\Controllers\Staff\AttendanceCheckInController;
+use App\Http\Controllers\Staff\PaymentRegistrationController;
+use App\Http\Controllers\Staff\ClassManagementController;
 use App\Http\Controllers\Client\ClientDashboardController;
 use App\Http\Controllers\Client\MembershipController;
 use App\Http\Controllers\Client\AttendanceController;
@@ -77,7 +81,25 @@ Route::middleware(['auth', 'verified', 'role:staff'])
         Route::get('/dashboard', [StaffDashboardController::class, 'index'])
             ->name('dashboard');
 
-        // TODO: Ver socios, registrar entradas, pagos, administrar clases
+        // Ver socios
+        Route::resource('members', MemberController::class)->only(['index', 'show']);
+
+        // Registrar entradas
+        Route::get('/attendance', [AttendanceCheckInController::class, 'index'])
+            ->name('attendance.index');
+        Route::post('/attendance', [AttendanceCheckInController::class, 'store'])
+            ->name('attendance.store');
+        Route::patch('/attendance/{attendance}/check-out', [AttendanceCheckInController::class, 'checkOut'])
+            ->name('attendance.checkOut');
+
+        // Registrar pagos
+        Route::get('/payments', [PaymentRegistrationController::class, 'index'])
+            ->name('payments.index');
+        Route::post('/payments', [PaymentRegistrationController::class, 'store'])
+            ->name('payments.store');
+
+        // Ver clases (solo lectura)
+        Route::resource('classes', ClassManagementController::class)->only(['index', 'show']);
     });
 
 // ============================================

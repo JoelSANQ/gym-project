@@ -153,4 +153,5 @@
             {{-- FILA 2: layout tipo “cards de contenido” como el tablero central --}}
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
 
+         
 </x-app-layout>

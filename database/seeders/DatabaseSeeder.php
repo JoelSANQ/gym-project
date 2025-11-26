@@ -31,7 +31,7 @@ class DatabaseSeeder extends Seeder
             ['email' => 'admin@gimnasio.com'],
             [
                 'name' => 'Administrador',
-                'password' => Hash::make('Admin123456'),
+                'password' => Hash::make('12345678'),
                 'role_id' => $adminRole->id,
                 'is_active' => true,
             ]
@@ -42,7 +42,7 @@ class DatabaseSeeder extends Seeder
             ['email' => 'cliente@example.com'],
             [
                 'name' => 'Cliente de Prueba',
-                'password' => Hash::make('Cliente123456'),
+                'password' => Hash::make('12345678'),
                 'role_id' => $clientRole->id,
                 'is_active' => true,
             ]
@@ -53,7 +53,7 @@ class DatabaseSeeder extends Seeder
             ['email' => 'staff@example.com'],
             [
                 'name' => 'Personal del Gimnasio',
-                'password' => Hash::make('Staff123456'),
+                'password' => Hash::make('12345678'),
                 'role_id' => $staffRole->id,
                 'is_active' => true,
             ]
@@ -129,10 +129,10 @@ class DatabaseSeeder extends Seeder
 
         // Crear pagos
         Payment::firstOrCreate(
-            ['user_id' => $client->id, 'concept' => 'Membresía Premium - Mes 1'],
+            ['user_id' => $client->id, 'concept' => 'Membresía Premium '],
             [
                 'membership_id' => $membership->id,
-                'amount' => 99.99,
+                'amount' => 350.00,
                 'payment_method' => 'card',
                 'status' => 'completed',
                 'payment_date' => now()->subDays(30),
@@ -140,10 +140,10 @@ class DatabaseSeeder extends Seeder
         );
 
         Payment::firstOrCreate(
-            ['user_id' => $client->id, 'concept' => 'Membresía Premium - Mes 2'],
+            ['user_id' => $client->id, 'concept' => 'Membresía Estandar'],
             [
                 'membership_id' => $membership->id,
-                'amount' => 99.99,
+                'amount' => 650.00,
                 'payment_method' => 'transfer',
                 'status' => 'completed',
                 'payment_date' => now()->subDays(15),
@@ -154,7 +154,7 @@ class DatabaseSeeder extends Seeder
             ['user_id' => $client->id, 'concept' => 'Clase adicional'],
             [
                 'membership_id' => null,
-                'amount' => 15.00,
+                'amount' => 100.00,
                 'payment_method' => 'cash',
                 'status' => 'completed',
                 'payment_date' => now()->subDays(5),
