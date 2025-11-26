@@ -2,6 +2,10 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\AdminDashboardController; // 👈 FALTA ESTE
+
+
 
 Route::get('/', function () {
     return view('welcome');
@@ -18,3 +22,13 @@ Route::middleware('auth')->group(function () {
 });
 
 require __DIR__.'/auth.php';
+
+Route::middleware(['auth', 'verified',])
+    ->prefix('admin')
+    ->name('admin.')
+    ->group(function () {
+        Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
+
+        // CRUD de usuarios
+        Route::resource('users', UserController::class);
+    });
